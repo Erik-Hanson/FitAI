@@ -15,7 +15,7 @@ origins = [
     "http://localhost:8000",
     "exp://",
     "*",
-    os.environ["EXPO_URL"],
+    "",
 ]
 
 app.add_middleware(
