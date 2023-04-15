@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Login from "@/components/login";
 import Logout from "@/components/logout";
+import Calendar from "@/components/calendar";
 const inter = Inter({ subsets: ["latin"] });
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -61,6 +62,7 @@ export default function Home() {
             Welcome {user.name} {user.sub}
           </h1>
         ) : null}
+        <Calendar></Calendar>
         {user ? <Logout /> : null}
       </main>
     </>
