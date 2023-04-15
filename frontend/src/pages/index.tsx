@@ -5,12 +5,15 @@ import styles from "@/styles/Home.module.css";
 import Login from "@/components/login";
 import Logout from "@/components/logout";
 import Calendar from "@/components/calendar";
+import Logger from "@/components/logger";
 const inter = Inter({ subsets: ["latin"] });
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
+import { Grid, GridItem } from "@chakra-ui/react";
+
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
@@ -57,12 +60,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
+        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+          <GridItem colSpan={4}>
+            <Logger></Logger>
+          </GridItem>
+          <GridItem colSpan={1}>
+            <Calendar></Calendar>
+          </GridItem>
+        </Grid>
         {user ? (
           <h1>
             Welcome {user.name} {user.sub}
           </h1>
         ) : null}
-        <Calendar></Calendar>
         {user ? <Logout /> : null}
       </main>
     </>

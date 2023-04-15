@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, HStack, Box, Text } from '@chakra-ui/react';
+import { VStack, HStack, Box, Text, Heading } from '@chakra-ui/react';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -40,18 +40,21 @@ const Calendar = () => {
     }
 
     return (
-        <VStack w="100%" p={4} boxShadow="md" borderRadius="lg">
-            <HStack>
-                {days.map((day) => (
-                    <Box key={day} w="40px" h="40px" display="flex" alignItems="center" justifyContent="center">
-                        <Text fontSize="sm" fontWeight="bold">
-                            {day}
-                        </Text>
-                    </Box>
-                ))}
-            </HStack>
-            {rows}
-        </VStack>
+        <>
+            <Heading>Calendar</Heading>
+            <VStack w="100%" p={4} boxShadow="md" borderRadius="lg">
+                <HStack>
+                    {days.map((day) => (
+                        <Box key={day} w="40px" h="40px" display="flex" alignItems="center" justifyContent="center">
+                            <Text fontSize="sm" fontWeight="bold">
+                                {day}
+                            </Text>
+                        </Box>
+                    ))}
+                </HStack>
+                {rows}
+            </VStack>
+        </>
     );
 };
 
