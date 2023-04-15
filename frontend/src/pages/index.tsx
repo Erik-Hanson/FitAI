@@ -8,19 +8,46 @@ const inter = Inter({ subsets: ["latin"] });
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
+import { firestore } from "../../firebase";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
-  console.log(user);
-  console.log(error);
-  console.log(isLoading);
 
   useEffect(() => {
+    const createUserDocument = async () => {
+      if (user && user.sub) {
+        const userString = user.name + "-" + user.sub;
+        const userRef = doc(firestore, "users", userString);
+        const userDoc = await getDoc(userRef);
+
+        if (!userDoc.exists()) {
+          const createdAt = new Date();
+          await setDoc(userRef, {
+            auth0UserId: user.sub,
+            createdAt,
+          });
+
+          // Create an empty food diary with no entries
+          const today = new Date().toISOString().split("T")[0];
+          const foodDiariesRef = collection(userRef, "foodDiaries");
+          const foodDiaryRef = doc(foodDiariesRef, today);
+
+          await setDoc(foodDiaryRef, {
+            date: new Date(today),
+            entries: [],
+          });
+        }
+      }
+    };
+
+    createUserDocument();
+
     if (!isLoading && !user && !error) {
       router.push("/login");
     }
-  }, [user, isLoading, error]);
+  }, [user, isLoading, error, router]);
 
   return (
     <>
@@ -28,7 +55,14 @@ export default function Home() {
         <title>FitAI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className={styles.main}>{user ? <Logout /> : null}</main>
+      <main className={styles.main}>
+        {user ? (
+          <h1>
+            Welcome {user.name} {user.sub}
+          </h1>
+        ) : null}
+        {user ? <Logout /> : null}
+      </main>
     </>
   );
 }
