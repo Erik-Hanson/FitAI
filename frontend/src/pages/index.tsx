@@ -14,7 +14,6 @@ import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-
 export default function Home() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
@@ -62,7 +61,7 @@ export default function Home() {
       <main className={styles.main}>
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           <GridItem colSpan={4}>
-            <Logger></Logger>
+            <Logger user={user}></Logger>
           </GridItem>
           <GridItem colSpan={1}>
             <Calendar></Calendar>
