@@ -7,16 +7,21 @@ import Logout from "@/components/logout";
 import Calendar from "@/components/calendar";
 import Logger from "@/components/logger";
 const inter = Inter({ subsets: ["latin"] });
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { Grid, GridItem } from "@chakra-ui/react";
+import ClearChatButton from "@/components/clearChatButton";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
+  const [currentDate, setCurrentDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  //  const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0, 10));
 
   useEffect(() => {
     const createUserDocument = async () => {
@@ -61,7 +66,10 @@ export default function Home() {
       <main className={styles.main}>
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           <GridItem colSpan={4}>
-            <Logger user={user}></Logger>
+            {user && <Logger user={user!}></Logger>}
+          </GridItem>
+          <GridItem colSpan={1}>
+            {user && <ClearChatButton user={user!} currentDate={currentDate} />}
           </GridItem>
           <GridItem colSpan={1}>
             <Calendar></Calendar>
