@@ -21,6 +21,11 @@ export default function Home() {
     new Date().toISOString().split("T")[0]
   );
   //  const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0, 10));
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+
+  const handleDateSelect = (date: string) => {
+    setSelectedDate(date);
+  };
 
   useEffect(() => {
     const createUserDocument = async () => {
@@ -65,10 +70,10 @@ export default function Home() {
       <main className={styles.main}>
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           <GridItem colSpan={4}>
-            {user && <Logger user={user!}></Logger>}
+            {user && <Logger user={user!} currentDate={selectedDate}></Logger>}
           </GridItem>
           <GridItem colSpan={1}>
-            <Calendar></Calendar>
+            <Calendar onDateSelect={handleDateSelect}></Calendar>
           </GridItem>
         </Grid>
         {user ? (

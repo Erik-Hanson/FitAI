@@ -39,12 +39,11 @@ interface Message {
 
 interface LoggerProps {
   user: User;
+  currentDate: string;
 }
 
-const Logger: React.FC<LoggerProps> = ({ user }) => {
+const Logger: React.FC<LoggerProps> = ({ user, currentDate }) => {
   const [mealDescription, setMealDescription] = useState("");
-
-  const currentDate = new Date().toISOString().slice(0, 10);
 
   const userString = user ? `${user.name}-${user.sub}` : "";
   const foodDiariesRef =
