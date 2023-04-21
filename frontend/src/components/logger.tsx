@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Heading, Textarea, Button, VStack } from "@chakra-ui/react";
+import {
+  Heading,
+  Textarea,
+  Button,
+  VStack,
+  Grid,
+  GridItem,
+  Box,
+  IconButton,
+} from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import {
   collection,
@@ -9,6 +19,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { firestore } from "../../firebase";
+import ClearChatButton from "./clearChatButton";
 
 interface User {
   sub: string;
@@ -46,6 +57,30 @@ const Logger: React.FC<LoggerProps> = ({ user }) => {
 
   const [diaryData] = useDocumentData(diaryDocRef);
   const [chatData] = useDocumentData(chatDocRef);
+
+  const handleDeleteEntry = async (index: number) => {
+    if (diaryData) {
+      const updatedEntries = diaryData.entries.filter(
+        (_: Entry, i: number) => i !== index
+      );
+      await setDoc(diaryDocRef, {
+        date: currentDate,
+        entries: updatedEntries,
+      });
+    }
+  };
+
+  const handleDeleteMessage = async (index: number) => {
+    if (chatData) {
+      const updatedMessages = chatData.messages.filter(
+        (_: Message, i: number) => i !== index
+      );
+      await setDoc(chatDocRef, {
+        date: currentDate,
+        messages: updatedMessages,
+      });
+    }
+  };
 
   const handleSubmit = async () => {
     if (user && mealDescription) {
@@ -106,18 +141,52 @@ const Logger: React.FC<LoggerProps> = ({ user }) => {
           value={mealDescription}
           onChange={(e) => setMealDescription(e.target.value)}
         />
+
+        <GridItem colSpan={1}>
+          {user && <ClearChatButton user={user!} currentDate={currentDate} />}
+        </GridItem>
         <Button onClick={handleSubmit}>Submit</Button>
         {diaryData?.entries &&
           diaryData.entries.map((entry: Entry, index: number) => (
-            <div key={index}>
+            <Box
+              key={index}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              p={3}
+              my={2}
+            >
               {entry.foodName} - {entry.calories} calories - {entry.servingSize}
-            </div>
+              <IconButton
+                aria-label="Delete entry"
+                icon={<DeleteIcon />}
+                isRound
+                onClick={() => handleDeleteEntry(index)}
+                size="sm"
+                ml={2}
+              />
+            </Box>
           ))}
         {chatData?.messages &&
           chatData.messages.map((message: Message, index: number) => (
-            <div key={index}>
+            <Box
+              key={index}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              p={3}
+              my={2}
+            >
               {message.sender === userString ? "You" : "AI"}: {message.text}
-            </div>
+              <IconButton
+                aria-label="Delete message"
+                icon={<DeleteIcon />}
+                isRound
+                onClick={() => handleDeleteMessage(index)}
+                size="sm"
+                ml={2}
+              />
+            </Box>
           ))}
       </VStack>
     </>

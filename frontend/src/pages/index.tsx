@@ -13,7 +13,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { Grid, GridItem } from "@chakra-ui/react";
-import ClearChatButton from "@/components/clearChatButton";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
@@ -67,9 +66,6 @@ export default function Home() {
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           <GridItem colSpan={4}>
             {user && <Logger user={user!}></Logger>}
-          </GridItem>
-          <GridItem colSpan={1}>
-            {user && <ClearChatButton user={user!} currentDate={currentDate} />}
           </GridItem>
           <GridItem colSpan={1}>
             <Calendar></Calendar>
