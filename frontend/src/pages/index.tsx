@@ -6,6 +6,7 @@ import Login from "@/components/login";
 import Logout from "@/components/logout";
 import Calendar from "@/components/calendar";
 import Logger from "@/components/logger";
+import Navigation from "@/components/navigation";
 const inter = Inter({ subsets: ["latin"] });
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -66,6 +67,7 @@ export default function Home() {
       <Head>
         <title>FitAI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Navigation></Navigation>
       </Head>
       <main className={styles.main}>
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
