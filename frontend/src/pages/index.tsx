@@ -9,13 +9,44 @@ import Logger from "@/components/logger";
 const inter = Inter({ subsets: ["latin"] });
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 export default function Home() {
+  // type AppUser = {
+  //   sub: string;
+  //   // Add any other necessary properties for the User type
+  // };
+
+  // const mapUserToAppUser = (userProfile: UserProfile): AppUser | null => {
+  //   if (!userProfile.sub) return null;
+
+  //   return {
+  //     sub: userProfile.sub,
+  //     // Map any other necessary properties
+  //   };
+  // };
+
+  // const appUser = user ? mapUserToAppUser(user) : null;
+
+  interface User {
+    sub: string;
+    name: string;
+  }
+
+  const mapUserToAppUser = (userProfile: UserProfile): User | null => {
+    if (!userProfile.sub || !userProfile.name) return null;
+
+    return {
+      sub: userProfile.sub,
+      name: userProfile.name,
+    };
+  };
+
   const { user, error, isLoading } = useUser();
+  const appUser = user ? mapUserToAppUser(user) : null;
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -70,7 +101,9 @@ export default function Home() {
       <main className={styles.main}>
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           <GridItem colSpan={4}>
-            {user && <Logger user={user!} currentDate={selectedDate}></Logger>}
+            {appUser && (
+              <Logger user={appUser} currentDate={selectedDate}></Logger>
+            )}
           </GridItem>
           <GridItem colSpan={1}>
             <Calendar onDateSelect={handleDateSelect}></Calendar>
