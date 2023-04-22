@@ -6,6 +6,9 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Link from "next/link";
+import Logout from "@/components/logout";
+import LoginButton from "@/components/login";
 
 const NavItem: React.FC = ({ children }: any) => {
     return (
@@ -21,7 +24,7 @@ const NavItem: React.FC = ({ children }: any) => {
     );
 };
 
-const Navigation: React.FC = () => {
+const Navigation: React.FC = (props: any) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
@@ -32,17 +35,19 @@ const Navigation: React.FC = () => {
             wrap="wrap"
             p={4}
         >
-            <Box
-                display={{ base: isOpen ? "block" : "none", md: "flex" }}
-                width={{ base: "full", md: "auto" }}
-                alignItems="center"
-                flexGrow={1}
-                pl={4}
-            >
-                <NavItem>Home</NavItem>
-                <NavItem>About</NavItem>
-                <NavItem>Contact</NavItem>
-            </Box>
+            {props.user ? (
+                <Box
+                    display={{ base: isOpen ? "block" : "none", md: "flex" }}
+                    width={{ base: "full", md: "auto" }}
+                    alignItems="center"
+                    flexGrow={1}
+                    pl={4}
+                >
+                    <NavItem>
+                        <Link href="/">Home</Link>
+                    </NavItem>
+                </Box>
+            ) : null }
 
             <Spacer />
 
@@ -50,14 +55,15 @@ const Navigation: React.FC = () => {
                 display={{ base: isOpen ? "block" : "none", md: "block" }}
                 mt={{ base: 4, md: 0 }}
             >
-                <Button variant="ghost" _hover={{ bg: "gray.700" }}>
-                    Sign In
-                </Button>
-                <Button
-                    ml={4}
-                >
-                    Sign Up
-                </Button>
+                {!props.user ? (
+                    <>
+                        {/* <Button variant="ghost" _hover={{ bg: "gray.700" }}>
+                            <Link href="/login">Sign In/Sign Up</Link>
+                        </Button> */}
+                        <LoginButton />
+                    </>
+                ) : null}
+                {props.user ? <Logout /> : null}
             </Box>
         </Flex>
     );
