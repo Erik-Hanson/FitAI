@@ -67,24 +67,23 @@ export default function Home() {
       <Head>
         <title>FitAI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Navigation></Navigation>
       </Head>
-      <main className={styles.main}>
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          <GridItem colSpan={4}>
-            {user && <Logger user={user!} currentDate={selectedDate}></Logger>}
-          </GridItem>
-          <GridItem colSpan={1}>
-            <Calendar onDateSelect={handleDateSelect}></Calendar>
-          </GridItem>
-        </Grid>
-        {user ? (
-          <h1>
-            Welcome {user.name} {user.sub}
-          </h1>
-        ) : null}
-        {user ? <Logout /> : null}
-      </main>
+        <Navigation user={user}></Navigation>
+        <main className={styles.main}>
+          <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+            <GridItem colSpan={4}>
+              {user && <Logger user={user!} currentDate={selectedDate}></Logger>}
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Calendar onDateSelect={handleDateSelect}></Calendar>
+            </GridItem>
+          </Grid>
+          {user ? (
+            <h1>
+              Welcome {user.name} {user.sub}
+            </h1>
+          ) : null}
+        </main>
     </>
   );
 }

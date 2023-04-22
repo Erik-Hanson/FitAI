@@ -12,8 +12,8 @@ export default function Login() {
 
   return (
     <>
-      <Button colorScheme="blue" variant="outline" onClick={handleClick}>
-        Login
+      <Button colorScheme="blue" variant="outline" _hover={{ bg: "gray.700" }} onClick={handleClick}>
+        Sign In/Sign Up
       </Button>
     </>
   );
