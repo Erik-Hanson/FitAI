@@ -3,6 +3,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import Logout from "@/components/logout";
 import LoginButton from "@/components/login";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface NavItemProps {
   children: React.ReactNode;
@@ -22,12 +23,13 @@ const NavItem: React.FC<NavItemProps> = ({ children }) => {
   );
 };
 
-const Navigation: React.FC = (props: any) => {
+const Navigation: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useUser();
 
   return (
     <Flex as="nav" align="center" justify="space-between" wrap="wrap" p={4}>
-      {props.user ? (
+      {user ? (
         <Box
           display={{ base: isOpen ? "block" : "none", md: "flex" }}
           width={{ base: "full", md: "auto" }}
@@ -47,7 +49,7 @@ const Navigation: React.FC = (props: any) => {
         display={{ base: isOpen ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
       >
-        {!props.user ? (
+        {!user ? (
           <>
             {/* <Button variant="ghost" _hover={{ bg: "gray.700" }}>
                             <Link href="/login">Sign In/Sign Up</Link>
@@ -55,7 +57,7 @@ const Navigation: React.FC = (props: any) => {
             <LoginButton />
           </>
         ) : null}
-        {props.user ? <Logout /> : null}
+        {user ? <Logout /> : null}
       </Box>
     </Flex>
   );

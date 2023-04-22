@@ -99,11 +99,10 @@ export default function Home() {
         <title>FitAI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-        <Navigation user={user}></Navigation>
         <main className={styles.main}>
           <Grid templateColumns="repeat(5, 1fr)" gap={6}>
             <GridItem colSpan={4}>
-              {user && <Logger user={appUser} currentDate={selectedDate}></Logger>}
+              {appUser && <Logger user={appUser} currentDate={selectedDate}></Logger>}
             </GridItem>
             <GridItem colSpan={1}>
               <Calendar onDateSelect={handleDateSelect}></Calendar>
