@@ -5,10 +5,15 @@
   },
   "hosting": {
     "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "env": {
+      "NEXT_PUBLIC_FIREBASE_API_KEY": "AIzaSyA1iloFmz_aonAXfOvSwlPSIdjHqr08s_k",
+      "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "fitai-ddd93.firebaseapp.com",
+      "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "fitai-ddd93",
+      "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "fitai-ddd93.appspot.com",
+      "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "128022293157",
+      "NEXT_PUBLIC_FIREBASE_APP_ID": "1:128022293157:web:d3022d6bf0757dbac87b4c",
+      "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-3LYYYV03VG"
+    }
   }
 }
