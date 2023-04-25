@@ -18,3 +18,4 @@ web-build/
 
 #pycache
 backend/__pycache__
+frontend/.env.production
