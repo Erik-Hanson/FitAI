@@ -16,22 +16,6 @@ import { firestore } from "../../firebase";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 export default function Home() {
-  // type AppUser = {
-  //   sub: string;
-  //   // Add any other necessary properties for the User type
-  // };
-
-  // const mapUserToAppUser = (userProfile: UserProfile): AppUser | null => {
-  //   if (!userProfile.sub) return null;
-
-  //   return {
-  //     sub: userProfile.sub,
-  //     // Map any other necessary properties
-  //   };
-  // };
-
-  // const appUser = user ? mapUserToAppUser(user) : null;
-
   interface User {
     sub: string;
     name: string;
@@ -99,21 +83,18 @@ export default function Home() {
         <title>FitAI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-        <main className={styles.main}>
-          <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-            <GridItem colSpan={4}>
-              {appUser && <Logger user={appUser} currentDate={selectedDate}></Logger>}
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Calendar onDateSelect={handleDateSelect}></Calendar>
-            </GridItem>
-          </Grid>
-          {user ? (
-            <h1>
-              Welcome {user.name} {user.sub}
-            </h1>
-          ) : null}
-        </main>
+      <main className={styles.main}>
+        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+          <GridItem colSpan={4}>
+            {appUser && (
+              <Logger user={appUser} currentDate={selectedDate}></Logger>
+            )}
+          </GridItem>
+          <GridItem colSpan={1}>
+            <Calendar onDateSelect={handleDateSelect}></Calendar>
+          </GridItem>
+        </Grid>
+      </main>
     </>
   );
 }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   Heading,
@@ -20,6 +21,15 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import ClearChatButton from "./clearChatButton";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
+const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
+
+//console.log("api_base_url: " + API_BASE_URL);
+interface FoodEntryData {
+  text: string;
+}
 
 interface User {
   sub: string;
@@ -57,6 +67,16 @@ const Logger: React.FC<LoggerProps> = ({ user, currentDate }) => {
   const [diaryData] = useDocumentData(diaryDocRef);
   const [chatData] = useDocumentData(chatDocRef);
 
+  const testApiConnection = async () => {
+    try {
+      console.log("Testing API connection...");
+      const response = await axios.get(`${API_BASE_URL}/test_connection`);
+      console.log("API connection test:", response.data);
+    } catch (error) {
+      console.error("Error testing API connection:", error);
+    }
+  };
+
   const handleDeleteEntry = async (index: number) => {
     if (diaryData) {
       const updatedEntries = diaryData.entries.filter(
@@ -81,13 +101,39 @@ const Logger: React.FC<LoggerProps> = ({ user, currentDate }) => {
     }
   };
 
+  const handleSendFoodEntry = async (
+    userInput: string
+  ): Promise<{ food_name: string }> => {
+    try {
+      const food_entry_data: FoodEntryData = {
+        text: userInput,
+      };
+      console.log("food_entry_data", food_entry_data);
+
+      const response = await axios.post(
+        `${API_BASE_URL}/create_food_entry`,
+        food_entry_data
+      );
+      console.log("response", response.data);
+      const food_name = response.data.text.food_name;
+      console.log("food_name: in ", food_name);
+      return { food_name };
+    } catch (error) {
+      console.error("Error sending food entry data:", error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async () => {
     if (user && mealDescription) {
+      const { food_name } = await handleSendFoodEntry(mealDescription);
+      console.log("food_name:", food_name);
+
       const newEntry = {
-        foodName: mealDescription,
+        foodName: food_name,
         calories: 0,
         servingSize: "unknown",
-      }; // Replace with actual data fetched from the food API
+      };
 
       if (!diaryData) {
         await setDoc(diaryDocRef, {
